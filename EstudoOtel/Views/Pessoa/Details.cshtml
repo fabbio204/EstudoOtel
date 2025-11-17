@@ -1,0 +1,23 @@
+@model EstudoOtel.Models.Pessoa
+
+@{
+    ViewData["Title"] = "Detalhes da Pessoa";
+}
+
+<h1>Detalhes</h1>
+
+<div class="mb-3">
+    <dl class="row">
+        <dt class="col-sm-2">Id</dt>
+        <dd class="col-sm-10">@Model.Id</dd>
+
+        <dt class="col-sm-2">Nome</dt>
+        <dd class="col-sm-10">@Model.Nome</dd>
+
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.Email</dd>
+    </dl>
+</div>
+
+<a asp-controller="Pessoa" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Editar</a>
+<a asp-controller="Pessoa" asp-action="Index" class="btn btn-secondary">Voltar</a>

@@ -1,0 +1,28 @@
+@model EstudoOtel.Models.Pessoa
+
+@{
+    ViewData["Title"] = "Excluir Pessoa";
+}
+
+<h1>Excluir Pessoa</h1>
+
+<h4>Tem certeza que deseja excluir este registro?</h4>
+
+<div class="mb-3">
+    <dl class="row">
+        <dt class="col-sm-2">Id</dt>
+        <dd class="col-sm-10">@Model.Id</dd>
+
+        <dt class="col-sm-2">Nome</dt>
+        <dd class="col-sm-10">@Model.Nome</dd>
+
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.Email</dd>
+    </dl>
+</div>
+
+<form asp-controller="Pessoa" asp-action="Delete" method="post">
+    <input asp-for="Id" type="hidden" />
+    <button type="submit" class="btn btn-danger" onclick="return confirm('Confirmar exclusão?');">Excluir</button>
+    <a asp-controller="Pessoa" asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
