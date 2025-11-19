@@ -1,5 +1,6 @@
 ﻿using EstudoOtel.Contexts;
 using EstudoOtel.Models;
+using EstudoOtel.Telemetry;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,10 +9,12 @@ namespace EstudoOtel.Controllers
     public class PessoaController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly PessoaMetrica _pessoaMetrica;
 
-        public PessoaController(ApplicationDbContext context)
+        public PessoaController(ApplicationDbContext context, PessoaMetrica pessoaMetrica)
         {
             _context = context;
+            _pessoaMetrica = pessoaMetrica;
         }
 
         // GET: Pessoa
@@ -46,6 +49,7 @@ namespace EstudoOtel.Controllers
             {
                 _context.Add(pessoa);
                 await _context.SaveChangesAsync();
+                _pessoaMetrica.RegistrarCadastro();
                 return RedirectToAction(nameof(Index));
             }
             return View(pessoa);

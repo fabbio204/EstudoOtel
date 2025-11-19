@@ -1,0 +1,29 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317  # <--- Aqui é onde a aplicação vai enviar os dados de métricas
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch: # Agrupa dados para envio eficiente (Melhora performance)
+
+exporters:
+  # Exemplo enviando para logs no console (para teste)
+  debug:
+    verbosity: detailed
+  # Aqui você configuraria o Prometheus, Loki, Tempo reais
+  prometheus:
+    endpoint: "0.0.0.0:8889" # Endpoint onde o prometheus vai poder coletar os dados
+
+service:
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug, prometheus] # Envia para o console e prometheus
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug]
