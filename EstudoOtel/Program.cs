@@ -27,7 +27,9 @@ builder.Services.AddOpenTelemetry()
         // Vincula as métricas padrão do ASP.NET 
         // Isso adicoina CPU, Memória, GC
         .AddAspNetCoreInstrumentation()
-        
+
+        .AddProcessInstrumentation()
+
         // Métricas personalizadas
         .AddMeter(PessoaMetrica.METRICA_PESSOA)
         

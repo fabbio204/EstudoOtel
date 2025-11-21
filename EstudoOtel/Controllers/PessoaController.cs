@@ -79,6 +79,7 @@ namespace EstudoOtel.Controllers
                 {
                     _context.Update(pessoa);
                     await _context.SaveChangesAsync();
+                    _pessoaMetrica.RegistrarEdicao();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
