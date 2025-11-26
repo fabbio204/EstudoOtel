@@ -1,0 +1,25 @@
+@using EstudoOtel.Controllers
+@model LoginViewModel
+
+@{
+    Layout = "_Layout";
+}
+
+<h2>Login</h2>
+
+<form asp-action="Index" method="post" class="form">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" class="form-control" required />
+        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-actions" style="margin-top:10px">
+        <button type="submit" class="btn btn-primary">Login</button>
+    </div>
+</form>
+
+<form asp-action="Logout" method="post" style="margin-top:8px">
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-link">Logout</button>
+</form>

@@ -1,18 +1,25 @@
 using EstudoOtel.Contexts;
 using EstudoOtel.Telemetry;
+using EstudoOtel.Middleware;
 using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
+using System.Collections.Concurrent;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddAuthentication("EstudoOtel.Cookie")
+    .AddCookie("EstudoOtel.Cookie", options =>
+    {
+        options.LoginPath = "/Login";
+    });
 
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource =>
@@ -32,6 +39,7 @@ builder.Services.AddOpenTelemetry()
 
         // Métricas personalizadas
         .AddMeter(PessoaMetrica.METRICA_PESSOA)
+        .AddMeter(UsuarioMetrica.METRICA_USUARIO)
         
         .AddOtlpExporter(collector =>
         {
@@ -42,6 +50,7 @@ builder.Services.AddOpenTelemetry()
     });
 
 builder.Services.AddSingleton<PessoaMetrica>();
+builder.Services.AddSingleton<UsuarioMetrica>();
 
 var app = builder.Build();
 
@@ -55,6 +64,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+// custom middleware to record logged users
+app.UseMiddleware<LoggedUsersMiddleware>();
 
 app.UseAuthorization();
 
