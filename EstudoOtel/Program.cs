@@ -4,7 +4,6 @@ using EstudoOtel.Middleware;
 using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
-using System.Collections.Concurrent;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +34,8 @@ builder.Services.AddOpenTelemetry()
         // Isso adicoina CPU, Memória, GC
         .AddAspNetCoreInstrumentation()
 
+        .AddRuntimeInstrumentation()
+
         .AddProcessInstrumentation()
 
         // Métricas personalizadas
@@ -45,7 +46,7 @@ builder.Services.AddOpenTelemetry()
         {
             // AQUI ESTÁ A MÁGICA
             collector.Endpoint = new Uri(builder.Configuration["OtelCollector:Url"]!);
-            collector.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
+            collector.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf;
         });
     });
 
